@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firebase.R
 import com.example.firebase.model.Mahasiswa
 import com.example.firebase.ui.home.viewmodel.HomeUiState
@@ -62,7 +63,7 @@ fun HomeScreen(
     navigateToltemEntry: () -> Unit,
     modifier: Modifier = Modifier,
     onDetailClick: (String) -> Unit = {},
-    viewModel: HomeViewModel = viewmodel(factory = PenyediaViewModel.Factory)
+    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
