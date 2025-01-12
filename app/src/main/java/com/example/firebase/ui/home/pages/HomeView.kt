@@ -233,5 +233,10 @@ fun HomeStatus(
     }
 }
 
+@Composable
+fun OnLoading(modifier: Modifier = Modifier) {
+    Text("Loading......")
+}
+
 
 
