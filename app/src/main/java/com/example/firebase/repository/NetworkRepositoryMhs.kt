@@ -59,4 +59,15 @@ class NetworkRepositoryMhs(private val firestore: FirebaseFirestore
         }
     }
 
-    
+    override suspend fun updateMhs(mahasiswa: Mahasiswa) {
+        try {
+            firestore.collection("mahasiswa")
+                .document(mahasiswa.nim)
+                .set(mahasiswa)
+                .await()
+        }catch (e: Exception){
+            throw Exception("Gagal mengupdate data mahasiswa :${e.message}")
+        }
+    }
+}
+
