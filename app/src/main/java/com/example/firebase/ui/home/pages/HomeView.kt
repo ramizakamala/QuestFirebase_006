@@ -195,5 +195,43 @@ fun MhsLayout(
     }
 }
 
+@Composable
+fun HomeStatus(
+    homeUiState: HomeUiState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDetailClick: (String) -> Unit,
+    onDeleteClick: (Mahasiswa) -> Unit = {},
+){
+    var deleteConfirmationRequired by rememberSaveable { mutableStateOf<Mahasiswa?>(null) }
+    when (homeUiState) {
+        is HomeUiState.loading -> OnLoading(modifier = modifier.fillMaxSize())
+
+        is HomeUiState.Success ->{
+            MhsLayout(
+                mahasiswa = homeUiState.data, modifier.fillMaxSize(),onDetailClick = {
+                    onDetailClick(it)
+                },
+                onDeleteClick = {
+                    onDeleteClick(it)
+                }
+            )
+            deleteConfirmationRequired?.let { data ->
+                DeleteConfirmationDialog(
+                    onDeleteConfirm = {
+                        onDeleteClick(data)
+                        deleteConfirmationRequired = null
+                    },
+                    onDeleteCancel = {
+                        deleteConfirmationRequired = null
+
+                    }
+                )
+            }
+        }
+        is HomeUiState.Error -> OnError(retryAction, message = homeUiState.e.message ?: "Error",modifier = Modifier.fillMaxSize())
+    }
+}
+
 
 
