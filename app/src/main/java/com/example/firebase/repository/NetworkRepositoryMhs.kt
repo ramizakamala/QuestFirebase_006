@@ -6,6 +6,7 @@ import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 
 class NetworkRepositoryMhs(private val firestore: FirebaseFirestore
 ): RepositoryMhs {
@@ -25,8 +26,8 @@ class NetworkRepositoryMhs(private val firestore: FirebaseFirestore
         }
     }
 
-    override fun getMhs(nim: String): Flow<Mahasiswa?> = callbackFlow {
-        val mhsDocument = firestore.collection("mahasiswa")
+    override fun getMhs(nim: String): Flow<Mahasiswa> = callbackFlow {
+        val mhsDocument = firestore.collection("Mahasiswa")
             .document(nim)
             .addSnapshotListener { value, error ->
                 if (value != null) {
@@ -36,6 +37,14 @@ class NetworkRepositoryMhs(private val firestore: FirebaseFirestore
             }
         awaitClose {
             mhsDocument.remove()
+        }
+    }
+
+    override suspend fun insertMhs(mahasiswa: Mahasiswa) {
+        try{
+            firestore.collection("mahasiswa").add(mahasiswa).await()
+        }catch (e : Exception){
+            throw Exception("Gagal menambahkan dara mahasiswa :${e.message}")
         }
     }
 
