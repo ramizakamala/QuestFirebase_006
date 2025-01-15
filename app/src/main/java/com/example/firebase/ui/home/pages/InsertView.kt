@@ -154,7 +154,7 @@ fun FormMahasiswa(
     mahasiswaEvent: MahasiswaEvent = MahasiswaEvent(),
     onValueChange: (MahasiswaEvent) -> Unit,
     errorState: FormErrorState = FormErrorState(),
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ){
     val jenisKelamin = listOf("Laki-laki", "Perempuan")
     val kelas = listOf("A", "B", "C", "D", "E")
@@ -264,5 +264,33 @@ fun FormMahasiswa(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Text(text = errorState.angkatan ?: "", color = Color.Red)
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.judulSkripsi,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(judulSkripsi = it))
+            },
+            label = {Text ("Judul Skripsi")},
+            isError = errorState.judulSkripsi != null,
+            placeholder = {Text ("Masukan Judul Skripsi Kamu")},
+        )
+        Text(
+            text = errorState.judulSkripsi ?: "",
+            color = Color.Blue
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.DosenPengampu,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(DosenPengampu = it))
+            },
+            label = {Text ("Dosen Pengampu")},
+            isError = errorState.Dosenpengampu != null,
+            placeholder = {Text ("Masukan Dosen Pengampu Skripsi Kamu")},
+        )
+        Text(
+            text = errorState.Dosenpengampu ?: "",
+            color = Color.Yellow
+        )
     }
 }
